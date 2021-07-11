@@ -1,71 +1,48 @@
 Schema-driven types
 =====================
 
-**Creating a minimal type based on a schema**
+**Creating a content type based on a (python) schema**
 
 The schema
 ------------
 
-A simple Dexterity type consists of a schema and an FTI (Factory Type Information, the object configured in :guilabel:`portal_types` in the ZMI).
+A simple Dexterity type consists of a schema (a python module) and an FTI (Factory Type Information, the object configured in :guilabel:`portal_types` in the ZMI).
 We’ll create the schemata here, and the FTI on the next page.
 
 Each schema is typically in a separate module. Thus, we will add three files to our product: ``presenter.py``, ``program.py``, and ``session.py``.
 Each will start off with a schema interface.
 
-Creating base files
-~~~~~~~~~~~~~~~~~~~
+The base files
+~~~~~~~~~~~~~~
 
 mr.bob created some support for our initial content type, "Program".
-Let's clean up a bit and then add another content type.
+You can find the python module with the schema in your package's src/example/conference/content directory,
+and the Dexterity FTI XML file in src/example/conference/profiles/default/types/Program.xml
 
-.. note::
+**Adding Sessions and Presenters**
 
-    The template's original setup assumed we were adding a single content type. In fact, we're going to add three.
-    We'll separate their support files in order to keep our code clean.
+Now, let's add the other content types.
 
-In your package's src/example/conference directory, you should find a file named ``interfaces.py``.
-Copy that file to ``program.py`` in the same directory.
-In ``interfaces.py``, delete the ``IProgram`` class.
-In ``program.py``, delete the ``IExampleConferenceLayer`` class.
+Return to the ``zinstance/src/`` directory and ask mr.bob for a content type named Session:
 
-In your package's src/example/conference/profiles/default/types directory, you should find a file named ``Program.xml``.
-Find the line that reads:
+.. code-block:: console
 
-.. code-block:: xml
+  $ ../bin/mrbob bobtemplates.plone:content_type -O example.conference
+  
+set the content type to "Session", no XML model, Dexterity base class "Item", not globally addable, parent container portal_type name "Program"
 
-    <property name="schema">example.conference.interfaces.IProgram</property>
-
-and change it to read:
-
-.. code-block:: xml
-
-    <property name="schema">example.conference.program.IProgram</property>
-
-That makes our setup profile point to our renamed schema file.
-
-**Adding Sessions**
-
-Now, let's add another content type for our conference sessions.
-
-First, return to the ``program.py`` file. Copy it to ``session.py``.
-In ``session.py``, rename the ``IProgram`` class to ``ISessions``.
-
-Copy the ``Program.xml`` file in the ``types/`` subdirectory to ``Session.xml``.
-
-Change ``example.conference.program.IProgram`` to ``example.conference.program.ISession`` in the new XML file.
-Change "Program" anywhere it appears to "Session".
-Do the same for "program" and "session".
-
-Find the ``src/example/conference/profiles/types.xml`` file, add a new object declaration:
+And then the Presenter: use the same command line above, but set the content type to "Presenter", no XML model, Dexterity base class "Item", globally addale.
+  
+Find the ``src/example/conference/profiles/types.xml`` file, add check that all three types are present:
 
 .. code-block:: xml
 
     <object name="portal_types" meta_type="Plone Types Tool">
       <object name="Program" meta_type="Dexterity FTI"/>
       <object name="Session" meta_type="Dexterity FTI"/>
+      <object name="Presenter" meta_type="Dexterity FTI"/>
     </object>
 
-Repeat the "Adding Sessions" steps for presenter.py, IPresenter, and presenter.xml.
 
 Setting the schema
 ~~~~~~~~~~~~~~~~~~
