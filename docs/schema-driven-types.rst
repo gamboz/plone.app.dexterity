@@ -31,7 +31,7 @@ Return to the ``zinstance/src/`` directory and ask mr.bob for a content type nam
   
 set the content type to "Session", no XML model, Dexterity base class "Item", not globally addable, parent container portal_type name "Program"
 
-And then the Presenter: use the same command line above, but set the content type to "Presenter", no XML model, Dexterity base class "Item", globally addale.
+And then the Presenter: use the same command line above, but set the content type to "Presenter", no XML model, Dexterity base class "Item", globally addable.
   
 Find the ``src/example/conference/profiles/types.xml`` file, add check that all three types are present:
 
